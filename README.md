@@ -1,0 +1,95 @@
+# JianDan Short-Drama Skill
+
+Official Agent Skill for the JianDan AI marketing short-drama platform. It teaches Codex, OpenClaw, TRAE, and other compatible agents how to operate short-drama projects safely through the `jd-drama` CLI.
+
+[中文说明](./README.zh-CN.md)
+
+## Status
+
+- Skill version: `1.0.0-beta.3`
+- CLI package: `@flyengine/jd-drama-cli`
+- Service: [jiandan.flyengine.cn](https://jiandan.flyengine.cn/)
+- Stage: public beta
+
+The public beta connects to production user data and real quotas. All write operations must be previewed with `--dry-run` and explicitly approved with `--confirm`.
+
+## Capabilities
+
+- Discover and inspect short-drama projects and brands.
+- Create projects from an AI idea or an uploaded script.
+- Read and manage scripts, outlines, roles, scenes, props, and appearances.
+- Inspect, optimize, and update storyboard segments.
+- Generate and inspect video tasks.
+- Diagnose failed tasks and produce recovery plans.
+
+## Install
+
+Install the CLI first:
+
+```bash
+npm install -g @flyengine/jd-drama-cli@beta
+jd-drama --version
+```
+
+Install the bundled skill for your agent:
+
+```bash
+# Codex
+jd-drama --json skill install --target codex --scope user --dry-run
+jd-drama --json skill install --target codex --scope user --confirm
+
+# OpenClaw
+jd-drama --json skill install --target openclaw --scope user --dry-run
+jd-drama --json skill install --target openclaw --scope user --confirm
+
+# TRAE, run in the target project
+jd-drama --json skill install --target trae --scope project --project-dir . --dry-run
+jd-drama --json skill install --target trae --scope project --project-dir . --confirm
+```
+
+The same `SKILL.md` can also be installed directly from this repository using the target agent's GitHub skill installation workflow.
+
+## Authorize
+
+```bash
+jd-drama auth login
+jd-drama --json release-check
+```
+
+Authorization happens in the JianDan website. Never provide a JianDan password or manually copied token to an agent.
+
+## Quick Start
+
+```bash
+jd-drama --json projects list --limit 10
+jd-drama --json brands list --limit 10
+jd-drama --json ai-script options
+jd-drama --json tasks recovery-plan PROJECT_ID
+```
+
+Preview project creation without writing data:
+
+```bash
+jd-drama --json ai-script create \
+  --idea "A fast-paced urban product marketing short drama" \
+  --episode-count 1 \
+  --name "Agent beta test" \
+  --generate \
+  --dry-run
+```
+
+## Safety
+
+- Use `--json` for agent calls.
+- Run the exact command with `--dry-run` before replacing it with `--confirm`.
+- Do not bypass CLI safety boundaries through raw API calls.
+- Do not expose passwords, authorization codes, local configuration files, or tokens.
+- Do not test destructive commands against valuable production projects.
+- Brand association is available only during initial project creation.
+
+Read [SKILL.md](./SKILL.md) for the full agent workflow.
+
+## License
+
+This repository does not grant an open-source license. Copyright is retained by FlyEngine. See [NOTICE](./NOTICE) for permitted public-beta use.
+
