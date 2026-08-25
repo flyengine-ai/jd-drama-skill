@@ -95,5 +95,4 @@ jd-drama --json ai-script create \
 
 ## 使用许可
 
-本仓库未授予开源许可证，著作权归 FlyEngine 所有。公开测试用途见 [NOTICE](./NOTICE)。
-
+本仓库中的 Skill 文件按 [MIT-0 许可证](./LICENSE)发布。该许可证不适用于剪单服务、API、CLI 实现、商标、用户账号、额度或生成内容，具体边界见 [NOTICE](./NOTICE)。

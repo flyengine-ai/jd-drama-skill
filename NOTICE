@@ -1,10 +1,10 @@
-Copyright (c) 2026 FlyEngine. All rights reserved.
+Copyright (c) 2026 FlyEngine AI.
 
-This repository is publicly available for evaluation with the official JianDan
-public-beta service. Permission is granted to download and use an unmodified
-copy of the Skill for that purpose. No permission is granted to modify,
-redistribute, sublicense, sell, or create derivative works except where
-expressly authorized in writing by FlyEngine.
+The Skill files in this repository are released under the MIT-0 License. This
+license applies only to this repository and the corresponding ClawHub Skill
+bundle. It does not license the JianDan service, API, CLI implementation,
+trademarks, user accounts, quotas, generated content, or other proprietary
+FlyEngine software.
 
-The JianDan service, user accounts, quotas, and generated content remain subject
-to the applicable JianDan product terms and policies.
+Use of the JianDan service remains subject to the applicable JianDan product
+terms and policies.

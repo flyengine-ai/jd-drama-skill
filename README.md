@@ -91,5 +91,4 @@ Read [SKILL.md](./SKILL.md) for the full agent workflow.
 
 ## License
 
-This repository does not grant an open-source license. Copyright is retained by FlyEngine. See [NOTICE](./NOTICE) for permitted public-beta use.
-
+The Skill files in this repository are released under the [MIT-0 License](./LICENSE). This license does not cover the JianDan service, API, CLI implementation, trademarks, user accounts, quotas, or generated content. See [NOTICE](./NOTICE).
