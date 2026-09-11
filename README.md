@@ -6,7 +6,7 @@ Official Agent Skill for the JianDan AI marketing short-drama platform. It teach
 
 ## Status
 
-- Skill version: `1.0.0-beta.3`
+- Skill version: `1.0.0-beta.5`
 - CLI package: `@flyengine/jd-drama-cli`
 - Service: [jiandan.flyengine.cn](https://jiandan.flyengine.cn/)
 - Stage: public beta
@@ -15,11 +15,12 @@ The public beta connects to production user data and real quotas. All write oper
 
 ## Capabilities
 
-- Discover and inspect short-drama projects and brands.
+- Discover and inspect short-drama projects, brands, and material libraries.
 - Create projects from an AI idea or an uploaded script.
-- Read and manage scripts, outlines, roles, scenes, props, and appearances.
-- Inspect, optimize, and update storyboard segments.
-- Generate and inspect video tasks.
+- Read, replace, verify, version, and restore official script episodes.
+- Extract and parse uploaded-script assets; create missing roles, scenes, and scene views.
+- Generate, inspect, optimize, and update storyboard segments, including Seedance 2.5 configuration.
+- Generate and inspect video tasks; attach a local video to a storyboard segment.
 - Diagnose failed tasks and produce recovery plans.
 
 ## Install
@@ -45,6 +46,9 @@ jd-drama --json skill install --target openclaw --scope user --confirm
 # TRAE, run in the target project
 jd-drama --json skill install --target trae --scope project --project-dir . --dry-run
 jd-drama --json skill install --target trae --scope project --project-dir . --confirm
+
+# WorkBuddy, run in the target project and follow the returned harness sync steps
+jd-drama --json skill doctor --target workbuddy
 ```
 
 The same `SKILL.md` can also be installed directly from this repository using the target agent's GitHub skill installation workflow.
@@ -58,11 +62,14 @@ jd-drama --json release-check
 
 Authorization happens in the JianDan website. Never provide a JianDan password or manually copied token to an agent.
 
+Devices authorized before brand and material management was added must log out and authorize once more so the expanded scopes can be reviewed.
+
 ## Quick Start
 
 ```bash
 jd-drama --json projects list --limit 10
 jd-drama --json brands list --limit 10
+jd-drama --json materials folders
 jd-drama --json ai-script options
 jd-drama --json tasks recovery-plan PROJECT_ID
 ```

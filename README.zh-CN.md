@@ -4,7 +4,7 @@
 
 ## 当前状态
 
-- Skill 版本：`1.0.0-beta.3`
+- Skill 版本：`1.0.0-beta.5`
 - CLI 包：`@flyengine/jd-drama-cli`
 - 服务地址：[jiandan.flyengine.cn](https://jiandan.flyengine.cn/)
 - 发布阶段：公开测试
@@ -13,11 +13,12 @@
 
 ## 支持能力
 
-- 查询短剧项目和品牌。
+- 查询短剧项目、品牌和素材库。
 - 根据创意或上传剧本创建短剧项目。
-- 读取和管理剧本、大纲、角色、场景、道具与形象资产。
-- 查询、优化和修改分镜。
-- 生成视频并检查任务进度。
+- 读取、替换、AI 校验、版本查询和恢复正式剧本分集。
+- 对上传剧本执行资产提取与深度解析，并补建角色、场景和场景视图。
+- 生成、查询、优化和修改分镜，支持 Seedance 2.5 拆分配置。
+- 生成视频、检查任务进度，并将本地视频关联到分镜。
 - 诊断失败任务并生成恢复建议。
 
 ## 安装 CLI
@@ -52,6 +53,14 @@ jd-drama --json skill install --target trae --scope project --project-dir . --dr
 jd-drama --json skill install --target trae --scope project --project-dir . --confirm
 ```
 
+### WorkBuddy
+
+在目标项目目录中执行诊断，并按返回提示同步 WorkBuddy harness：
+
+```bash
+jd-drama --json skill doctor --target workbuddy
+```
+
 也可以使用目标智能体提供的 GitHub Skill 安装能力，直接从本仓库安装根目录下的 `SKILL.md`。
 
 ## 网页授权
@@ -63,11 +72,14 @@ jd-drama --json release-check
 
 授权在剪单网页完成。不要向智能体提供剪单密码、手工复制的 Token、授权码或本地配置文件。
 
+如果设备是在品牌与素材库管理能力上线前完成授权，需要先退出再重新授权一次，以便用户确认新增权限范围。
+
 ## 快速验证
 
 ```bash
 jd-drama --json projects list --limit 10
 jd-drama --json brands list --limit 10
+jd-drama --json materials folders
 jd-drama --json ai-script options
 ```
 
