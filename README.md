@@ -6,7 +6,7 @@ Official Agent Skill for the JianDan AI marketing short-drama platform. It teach
 
 ## Status
 
-- Skill version: `1.0.0-beta.5`
+- Skill version: `1.0.0-beta.6`
 - CLI package: `@flyengine/jd-drama-cli`
 - Service: [jiandan.flyengine.cn](https://jiandan.flyengine.cn/)
 - Stage: public beta
@@ -18,7 +18,7 @@ The public beta connects to production user data and real quotas. All write oper
 - Discover and inspect short-drama projects, brands, and material libraries.
 - Create projects from an AI idea or an uploaded script.
 - Read, replace, verify, version, and restore official script episodes.
-- Extract and parse uploaded-script assets; create missing roles, scenes, and scene views.
+- Extract and parse assets through the system for uploaded, AI-generated, and secondary-created scripts; edit and regenerate existing parsed assets.
 - Generate, inspect, optimize, and update storyboard segments, including Seedance 2.5 configuration.
 - Generate and inspect video tasks; attach a local video to a storyboard segment.
 - Diagnose failed tasks and produce recovery plans.
@@ -62,7 +62,7 @@ jd-drama --json release-check
 
 Authorization happens in the JianDan website. Never provide a JianDan password or manually copied token to an agent.
 
-Devices authorized before brand and material management was added must log out and authorize once more so the expanded scopes can be reviewed.
+Local agents normally share one browser authorization. Check `jd-drama --json doctor` and authorize only when `auth.browserAuthorization.needsLogin` is true. Do not log out and log in as an automatic repair: logout revokes the shared session for all tools. Resolve filesystem, Keychain, or network diagnostics before retrying. Missing brand/material scopes require one new browser approval, without a preceding logout.
 
 ## Quick Start
 
@@ -93,6 +93,8 @@ jd-drama --json ai-script create \
 - Do not expose passwords, authorization codes, local configuration files, or tokens.
 - Do not test destructive commands against valuable production projects.
 - Brand association is available only during initial project creation.
+- Asset records must be created by system extraction and parsing, never manually or through direct API calls. Wait for extraction to succeed before deep parsing, and for parsing to succeed before image generation. Deep parsing may consume credits.
+- Upgrade every local CLI/MCP client. The matching backend update blocks manual creation from older clients only after that backend is deployed.
 
 Read [SKILL.md](./SKILL.md) for the full agent workflow.
 

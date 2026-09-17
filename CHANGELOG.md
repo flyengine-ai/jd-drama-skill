@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0-beta.6 - 2026-09-17
+
+- Require JianDan CLI `1.0.0-beta.6`; pair with MCP `0.1.0-beta.4`.
+- Coordinate shared local authorization across agents and concurrent CLI processes; avoid automatic logout/login repairs.
+- Require system asset extraction and deep parsing for every script source; remove manual asset creation from agent workflows.
+- Preserve edits and image regeneration for existing parsed assets.
+- Clarify that older-client enforcement requires the matching backend deployment; client publication does not deploy the backend.
+
 ## 1.0.0-beta.5 - 2026-09-11
 
 - Require JianDan CLI `1.0.0-beta.5` and document reauthorization for expanded brand/material scopes.

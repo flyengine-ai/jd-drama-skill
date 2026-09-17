@@ -13,14 +13,14 @@ metadata:
 ## Install And Start
 
 1. Check `command -v jd-drama` and `jd-drama --version`.
-2. If missing or older than `1.0.0-beta.5`, install or update with `npm install -g @flyengine/jd-drama-cli@beta`.
+2. If missing or older than `1.0.0-beta.6`, install or update with `npm install -g @flyengine/jd-drama-cli@beta`.
 3. Run `jd-drama --json doctor`. The public beta defaults to `https://jiandan.flyengine.cn/api`, the JianDan production environment.
-4. If `auth.browserAuthorization.authorized` is false, run `jd-drama auth login` and let the user approve it in the JianDan browser page.
+4. Run `jd-drama auth login` only when `auth.browserAuthorization.needsLogin` is true, and let the user approve it in the JianDan browser page. On older CLIs without this field, check `auth status`: log in when `authMode` is `none` or the server explicitly rejects the refresh authorization. `authorized: false` alone can mean the agent cannot read the macOS Keychain, not that a new login is needed.
 5. Run `jd-drama --json release-check` before live work and proceed only when `data.ok` is true.
 
 Never ask for a JianDan password or Token. The CLI supports browser authorization only. Use `--json` for agent calls. Do not override the production API unless the user explicitly requests a local or test environment.
 
-When the installed CLI starts requesting new brand/material scopes, existing devices must run `auth logout` and `auth login` once so the user can review the expanded authorization.
+Codex, WorkBuddy and other local agents normally share `~/.jd-drama/config.json` and one browser authorization. Reuse it; do not log in again just because a different tool is starting a task. `auth logout` revokes this shared authorization for all tools, so never use logout/login as an automatic repair. For `credential_unavailable` or `refresh_unavailable`, inspect the diagnostic, obtain the agent's normal filesystem/Keychain permissions or resolve the network error, then retry the original command. Do not copy tokens or disable sandbox protections. After a server-confirmed revocation, coordinate a single reauthorization, then resume both tools. Missing brand/material scopes require one new browser approval, not a preceding logout.
 
 ```bash
 npm install -g @flyengine/jd-drama-cli@beta
@@ -55,19 +55,25 @@ jd-drama --json ai-script create --idea "品牌短剧创意" --episode-count 10 
 jd-drama --json imports create-from-file ./script.md --name "项目名" --parse-assets --dry-run
 ```
 
-`--parse-assets` follows the Web two-stage flow: wait for the outline, run free parent asset extraction, wait for success, then start charged deep asset parsing. For manual control, use `assets extract`, `assets extraction-progress`, `assets parse`, and `assets parse-progress` in that order.
+`--parse-assets` follows the Web two-stage flow: wait for the outline, run free parent asset extraction, wait for success, then start charged deep asset parsing. For staged execution, use `assets extract`, `assets extraction-progress`, `assets parse`, and `assets parse-progress` in that order. This system parsing flow is required for uploaded, AI-generated, and secondary-created projects alike.
 
 To associate a brand, resolve its ID and pass `--brand-id` plus `--brand-placement-depth auto|light|medium|heavy` during initial project creation. Do not change an existing project's brand.
 
 ## Assets, Brands, And Materials
 
-Use the manual asset commands when extraction misses a parent entity or the user needs another scene view:
+Roles, scenes, props, role appearances, and scene views must come from system asset extraction/parsing. Do not invent asset records, manually create them, or use direct API calls or episode materials to substitute for required parsed assets. The CLI and MCP do not expose manual creation. The matching backend update also rejects these requests for older CLI clients once deployed; do not rely on that server restriction during a staged rollout.
+
+After the script and outline are ready, preview and confirm extraction, wait for successful extraction, then preview and confirm deep parsing. Deep parsing may consume credits and requires the usual user approval. Wait for parsing to succeed before editing parsed assets or generating their images. Do not treat an accepted task or existing parent records as proof that parsing is complete.
 
 ```bash
-jd-drama --json assets create-role <projectId> --name "林夏" --role-type main --dry-run
-jd-drama --json assets create-scene <projectId> --name "会议室" --primary-appearance-name "白天全景" --dry-run
-jd-drama --json assets create-scene-appearance <projectId> --scene-id <sceneId> --name "夜景近景" --dry-run
+jd-drama --json assets extract <projectId> --dry-run
+jd-drama --json assets extraction-progress <projectId>
+jd-drama --json assets parse <projectId> --dry-run
+jd-drama --json assets parse-progress <projectId>
+jd-drama --json assets summary <projectId>
 ```
+
+If extraction or parsing fails or misses an entity, inspect `tasks errors` and the saved script. Report the issue, correct the script when permitted, or retry the supported system stage with approval. Never fall back to manual asset creation. Edits to existing assets and their `regenerate-*` commands remain supported; do not fabricate asset IDs.
 
 Brand profile and material-library CRUD are supported with the same preview/approval boundary. Brand create/update requires a JSON product array containing at least `name` and `thumbnailUrl` per product.
 
