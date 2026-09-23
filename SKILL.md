@@ -13,9 +13,9 @@ metadata:
 ## Install And Start
 
 1. Check `command -v jd-drama` and `jd-drama --version`.
-2. If missing or older than `1.0.0-beta.6`, install or update with `npm install -g @flyengine/jd-drama-cli@beta`.
+2. If missing or older than `1.0.0-beta.8`, install or update with `npm install -g @flyengine/jd-drama-cli@beta`.
 3. Run `jd-drama --json doctor`. The public beta defaults to `https://jiandan.flyengine.cn/api`, the JianDan production environment.
-4. Run `jd-drama auth login` only when `auth.browserAuthorization.needsLogin` is true, and let the user approve it in the JianDan browser page. On older CLIs without this field, check `auth status`: log in when `authMode` is `none` or the server explicitly rejects the refresh authorization. `authorized: false` alone can mean the agent cannot read the macOS Keychain, not that a new login is needed.
+4. Run `jd-drama auth login` only when `auth.browserAuthorization.needsLogin` is true, and let the user approve it in the JianDan browser page. On older CLIs without this field, check `auth status`: log in when `authMode` is `none` or the server explicitly rejects the refresh authorization. `authorized: false` alone can mean the agent cannot read the macOS Keychain, not that a new login is needed. Callers that have no TTY and cannot wait for browser approval may use `jd-drama auth login --no-wait`: it saves the pending request before printing the verification URL and exits immediately; after browser approval, call `jd-drama --json auth status` or `jd-drama --json release-check` to complete the exchange. When `pendingAuthorization` is true, respect `retryAfterSeconds` and do not start another login.
 5. Run `jd-drama --json release-check` before live work and proceed only when `data.ok` is true.
 
 Never ask for a JianDan password or Token. The CLI supports browser authorization only. Use `--json` for agent calls. Do not override the production API unless the user explicitly requests a local or test environment.

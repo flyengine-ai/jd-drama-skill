@@ -6,7 +6,7 @@ Official Agent Skill for the JianDan AI marketing short-drama platform. It teach
 
 ## Status
 
-- Skill version: `1.0.0-beta.6`
+- Skill version: `1.0.0-beta.8`
 - CLI package: `@flyengine/jd-drama-cli`
 - Service: [jiandan.flyengine.cn](https://jiandan.flyengine.cn/)
 - Stage: public beta
@@ -61,6 +61,17 @@ jd-drama --json release-check
 ```
 
 Authorization happens in the JianDan website. Never provide a JianDan password or manually copied token to an agent.
+
+Connectors that cannot keep a login process running use CLI `1.0.0-beta.8` or later:
+
+```bash
+jd-drama auth login --no-wait --no-open
+# After browser approval:
+jd-drama --json auth status
+jd-drama --json release-check
+```
+
+The CLI saves the pending request before showing the verification URL. Status, doctor, and release checks can finish that request after browser approval. While `pendingAuthorization` is true, wait for `retryAfterSeconds` instead of starting another login. Pending requests and saved credentials are isolated by config path and API environment, and concurrent status calls share the credential lock. MCP `0.1.0-beta.5` starts this non-blocking flow automatically through `jd_drama_auth_login`; call `jd_drama_status` after browser approval.
 
 Local agents normally share one browser authorization. Check `jd-drama --json doctor` and authorize only when `auth.browserAuthorization.needsLogin` is true. Do not log out and log in as an automatic repair: logout revokes the shared session for all tools. Resolve filesystem, Keychain, or network diagnostics before retrying. Missing brand/material scopes require one new browser approval, without a preceding logout.
 

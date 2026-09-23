@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0-beta.8 - 2026-09-23
+
+- Require JianDan CLI `1.0.0-beta.8`; pair with MCP `0.1.0-beta.5`.
+- Document non-blocking browser authorization for WorkBuddy and other connector runtimes.
+- Complete pending authorization through status, doctor, or release-check after browser approval; respect polling intervals and avoid duplicate logins.
+- Explain config/API isolation and shared locking for concurrent authorization checks.
+- Preserve the system asset parsing workflow and shared local session guidance.
+
 ## 1.0.0-beta.6 - 2026-09-17
 
 - Require JianDan CLI `1.0.0-beta.6`; pair with MCP `0.1.0-beta.4`.
