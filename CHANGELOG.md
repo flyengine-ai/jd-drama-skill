@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.0-beta.9 - 2026-09-23
+
+- Require JianDan CLI `1.0.0-beta.9`; pair with MCP `0.1.0-beta.6`.
+- Synchronize `SKILL.md` with the CLI-bundled Skill.
+- Document canonical project aspect-ratio codes: `portrait_9_16` and `landscape_16_9`.
+- Explain known-label normalization, enabled-code discovery for other formats, and the limits of local dry-run validation.
+- Add explicit vertical framing to the English and Chinese project-creation examples.
+- Preserve browser authorization, shared-session safeguards, and mandatory system asset parsing.
+
 ## 1.0.0-beta.8 - 2026-09-23
 
 - Require JianDan CLI `1.0.0-beta.8`; pair with MCP `0.1.0-beta.5`.

@@ -6,8 +6,9 @@ Official Agent Skill for the JianDan AI marketing short-drama platform. It teach
 
 ## Status
 
-- Skill version: `1.0.0-beta.8`
-- CLI package: `@flyengine/jd-drama-cli`
+- Skill version: `1.0.0-beta.9`
+- Required CLI: `@flyengine/jd-drama-cli@1.0.0-beta.9` or later
+- Matching MCP: `@flyengine/jd-drama-mcp@0.1.0-beta.6` (optional)
 - Service: [jiandan.flyengine.cn](https://jiandan.flyengine.cn/)
 - Stage: public beta
 
@@ -62,7 +63,7 @@ jd-drama --json release-check
 
 Authorization happens in the JianDan website. Never provide a JianDan password or manually copied token to an agent.
 
-Connectors that cannot keep a login process running use CLI `1.0.0-beta.8` or later:
+Connectors that cannot keep a login process running can use non-blocking authorization with the required CLI:
 
 ```bash
 jd-drama auth login --no-wait --no-open
@@ -71,7 +72,7 @@ jd-drama --json auth status
 jd-drama --json release-check
 ```
 
-The CLI saves the pending request before showing the verification URL. Status, doctor, and release checks can finish that request after browser approval. While `pendingAuthorization` is true, wait for `retryAfterSeconds` instead of starting another login. Pending requests and saved credentials are isolated by config path and API environment, and concurrent status calls share the credential lock. MCP `0.1.0-beta.5` starts this non-blocking flow automatically through `jd_drama_auth_login`; call `jd_drama_status` after browser approval.
+The CLI saves the pending request before showing the verification URL. Status, doctor, and release checks can finish that request after browser approval. While `pendingAuthorization` is true, wait for `retryAfterSeconds` instead of starting another login. Pending requests and saved credentials are isolated by config path and API environment, and concurrent status calls share the credential lock. MCP `0.1.0-beta.6` starts this non-blocking flow automatically through `jd_drama_auth_login`; call `jd_drama_status` after browser approval.
 
 Local agents normally share one browser authorization. Check `jd-drama --json doctor` and authorize only when `auth.browserAuthorization.needsLogin` is true. Do not log out and log in as an automatic repair: logout revokes the shared session for all tools. Resolve filesystem, Keychain, or network diagnostics before retrying. Missing brand/material scopes require one new browser approval, without a preceding logout.
 
@@ -92,9 +93,20 @@ jd-drama --json ai-script create \
   --idea "A fast-paced urban product marketing short drama" \
   --episode-count 1 \
   --name "Agent beta test" \
+  --aspect-ratio-code portrait_9_16 \
   --generate \
   --dry-run
 ```
+
+### Project Aspect Ratio
+
+Use `--aspect-ratio-code` in CLI commands, or `aspectRatioCode` in MCP parameters:
+
+- Vertical 9:16: `portrait_9_16`.
+- Horizontal 16:9: `landscape_16_9`.
+- Other formats: select an enabled `aspectRatio[].code` returned by `ai-script start-parse` or `imports start-parse`; do not invent codes or use `ratioLabel`.
+
+CLI `1.0.0-beta.9` also normalizes the known labels `9:16` and `16:9` to these codes. Explicit codes are preferred and work with older clients. Inspect the final create-project body in the dry-run; a local preview does not verify server-side availability.
 
 ## Safety
 

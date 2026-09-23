@@ -13,7 +13,7 @@ metadata:
 ## Install And Start
 
 1. Check `command -v jd-drama` and `jd-drama --version`.
-2. If missing or older than `1.0.0-beta.8`, install or update with `npm install -g @flyengine/jd-drama-cli@beta`.
+2. If missing or older than `1.0.0-beta.9`, install or update with `npm install -g @flyengine/jd-drama-cli@beta`.
 3. Run `jd-drama --json doctor`. The public beta defaults to `https://jiandan.flyengine.cn/api`, the JianDan production environment.
 4. Run `jd-drama auth login` only when `auth.browserAuthorization.needsLogin` is true, and let the user approve it in the JianDan browser page. On older CLIs without this field, check `auth status`: log in when `authMode` is `none` or the server explicitly rejects the refresh authorization. `authorized: false` alone can mean the agent cannot read the macOS Keychain, not that a new login is needed. Callers that have no TTY and cannot wait for browser approval may use `jd-drama auth login --no-wait`: it saves the pending request before printing the verification URL and exits immediately; after browser approval, call `jd-drama --json auth status` or `jd-drama --json release-check` to complete the exchange. When `pendingAuthorization` is true, respect `retryAfterSeconds` and do not start another login.
 5. Run `jd-drama --json release-check` before live work and proceed only when `data.ok` is true.
@@ -58,6 +58,12 @@ jd-drama --json imports create-from-file ./script.md --name "项目名" --parse-
 `--parse-assets` follows the Web two-stage flow: wait for the outline, run free parent asset extraction, wait for success, then start charged deep asset parsing. For staged execution, use `assets extract`, `assets extraction-progress`, `assets parse`, and `assets parse-progress` in that order. This system parsing flow is required for uploaded, AI-generated, and secondary-created projects alike.
 
 To associate a brand, resolve its ID and pass `--brand-id` plus `--brand-placement-depth auto|light|medium|heavy` during initial project creation. Do not change an existing project's brand.
+
+Project framing uses `--aspect-ratio-code`, not a display label: prefer `portrait_9_16` for vertical 9:16 and `landscape_16_9` for horizontal 16:9. For other formats, select an enabled `aspectRatio[].code` from `ai-script start-parse` or `imports start-parse`; do not pass `ratioLabel` or invent codes. Explicit codes also work with older CLI releases. Inspect the final create-project body in the dry-run; a local preview does not check server-side availability.
+
+```bash
+jd-drama --json ai-script create-project --import-id <importId> --name "项目名" --aspect-ratio-code portrait_9_16 --dry-run
+```
 
 ## Assets, Brands, And Materials
 

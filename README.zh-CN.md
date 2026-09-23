@@ -4,8 +4,9 @@
 
 ## 当前状态
 
-- Skill 版本：`1.0.0-beta.8`
-- CLI 包：`@flyengine/jd-drama-cli`
+- Skill 版本：`1.0.0-beta.9`
+- CLI 最低版本：`@flyengine/jd-drama-cli@1.0.0-beta.9`
+- 配套 MCP：`@flyengine/jd-drama-mcp@0.1.0-beta.6`（可选）
 - 服务地址：[jiandan.flyengine.cn](https://jiandan.flyengine.cn/)
 - 发布阶段：公开测试
 
@@ -72,7 +73,7 @@ jd-drama --json release-check
 
 授权在剪单网页完成。不要向智能体提供剪单密码、手工复制的 Token、授权码或本地配置文件。
 
-WorkBuddy 等无法持续等待网页授权的连接器，使用 CLI `1.0.0-beta.8` 及以上版本：
+WorkBuddy 等无法持续等待网页授权的连接器，可在上述 CLI 版本中使用非阻塞授权：
 
 ```bash
 jd-drama auth login --no-wait --no-open
@@ -81,7 +82,7 @@ jd-drama --json auth status
 jd-drama --json release-check
 ```
 
-CLI 会先保存待完成的授权请求，再输出独立一行的授权链接并退出。用户批准后，状态检查、诊断或发布检查会完成登录。`pendingAuthorization` 为 true 时，按 `retryAfterSeconds` 等待，不要反复发起登录。待完成的授权与已保存凭据按配置文件及 API 环境隔离，并发状态检查共用凭据锁。MCP `0.1.0-beta.5` 的 `jd_drama_auth_login` 自动使用此流程，网页批准后调用 `jd_drama_status` 即可完成登录。
+CLI 会先保存待完成的授权请求，再输出独立一行的授权链接并退出。用户批准后，状态检查、诊断或发布检查会完成登录。`pendingAuthorization` 为 true 时，按 `retryAfterSeconds` 等待，不要反复发起登录。待完成的授权与已保存凭据按配置文件及 API 环境隔离，并发状态检查共用凭据锁。MCP `0.1.0-beta.6` 的 `jd_drama_auth_login` 自动使用此流程，网页批准后调用 `jd_drama_status` 即可完成登录。
 
 本机多个智能体通常共用一次网页授权。先检查 `jd-drama --json doctor`，仅在 `auth.browserAuthorization.needsLogin` 为 true 时登录。不要自动退出再登录：退出会撤销所有工具共用的授权。文件、钥匙串权限或网络异常应先按诊断处理后重试。缺少品牌与素材库权限时只需重新完成一次网页批准，无需先退出。
 
@@ -101,9 +102,20 @@ jd-drama --json ai-script create \
   --idea "一支突出产品卖点的都市反转营销短剧" \
   --episode-count 1 \
   --name "CLI公测项目" \
+  --aspect-ratio-code portrait_9_16 \
   --generate \
   --dry-run
 ```
+
+### 项目画幅
+
+CLI 使用 `--aspect-ratio-code`，MCP 使用 `aspectRatioCode` 参数：
+
+- 竖屏 9:16：`portrait_9_16`。
+- 横屏 16:9：`landscape_16_9`。
+- 其他画幅：从 `ai-script start-parse` 或 `imports start-parse` 返回的 `aspectRatio[].code` 中选择已启用项，不要自行拼接编码或传入 `ratioLabel`。
+
+CLI `1.0.0-beta.9` 也会将已知标签 `9:16`、`16:9` 自动转换为上述编码。建议直接使用编码，兼容旧版客户端。预览时检查最终创建项目的请求内容；本地预览不会校验服务端是否已启用该画幅。
 
 ## 安全边界
 
